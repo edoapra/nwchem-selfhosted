@@ -29,7 +29,6 @@ jobs:
           - ompi41x.ifx
           - ompi41x.ifort
           - ompi41x
-          - mpi-ts.ompi41x.ifort
       fail-fast: false
     env:
         USE_LIBXC: 1
