@@ -79,5 +79,5 @@ jobs:
           MYNN=$(( $SLURM_NNODES*$SLURM_NTASKS_PER_NODE ))
           echo MYNN is $MYNN
           (echo ${{ env.nwversion }}.${{ matrix.sing_image }}; ./doqmtests.mpi  $MYNN flaky ; echo ${{ env.nwversion }}.${{ matrix.sing_image }}) | tee >(ts "%d%b%Y %H:%M:%S" > ../../../../doqmtests.mpi.log.` date +%b%d%Y_%H:%M`)
-	  scancel $SLURM_JOBID
+          scancel $SLURM_JOBID
         shell: bash
