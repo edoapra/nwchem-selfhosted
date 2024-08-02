@@ -84,6 +84,11 @@ jobs:
           rm -f test.sh
           echo "sleep 1m ; scancel $SLURM_JOBID" > test.sh
           chmod +x test.sh
+	  ls -lrta
+	  echo test.sh content is
+	  echo *****
+	  cat ./test.sh
+	  echo *********
           nohup ./test.sh &
           echo 'exiting'
           exit 0
