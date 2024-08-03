@@ -81,6 +81,8 @@ jobs:
           echo MYNN is $MYNN
           (echo ${{ env.nwversion }}.${{ matrix.sing_image }}; ./doqmtests.mpi  $MYNN fast ; echo ${{ env.nwversion }}.${{ matrix.sing_image }}) | tee >(ts "%d%b%Y %H:%M:%S" > ../../../../doqmtests.mpi.log.` date +%b%d%Y_%H:%M`)
           echo 'calling scancel'
+          set +eo pipefail {0}
+          echo $SHELLOPTS
           rm -f test.sh
           echo "sleep 1m ; scancel $SLURM_JOBID" > test.sh
           chmod +x test.sh
