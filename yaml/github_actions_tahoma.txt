@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 jobs:
   build_workflow:
-    uses: edoapra/nwchem/.github/workflows/update_main.yml@main
+#    uses: edoapra/nwchem/.github/workflows/update_main.yml@main
     secrets:
       inherit
   build_singularity:
@@ -78,24 +78,16 @@ jobs:
           export MPIRUN_PATH=`which srun`
           MYNN=$(( $SLURM_NNODES*$SLURM_NTASKS_PER_NODE ))
           echo MYNN is $MYNN
-          (echo ${{ env.nwversion }}.${{ matrix.sing_image }}; ./doqmtests.mpi  $MYNN fast ; echo ${{ env.nwversion }}.${{ matrix.sing_image }}) | tee >(ts "%d%b%Y %H:%M:%S" > ../../../../doqmtests.mpi.log.` date +%b%d%Y_%H:%M`)
+          (echo ${{ env.nwversion }}.${{ matrix.sing_image }}; ./runtests.mpi.unix procs $MYNN h2o_opt ; echo ${{ env.nwversion }}.${{ matrix.sing_image }}) | tee >(ts "%d%b%Y %H:%M:%S" > ../../../../doqmtests.mpi.log.` date +%b%d%Y_%H:%M`)
         shell: bash
-      - name: run qa tests
+      - name: stop slurm job
         run: |
           pwd
           env|egrep SLUR
           echo 'calling scancel'
-          set +eo pipefail {0}
-          echo $SHELLOPTS
           rm -f test.sh
-          echo "sleep 1m ; scancel $SLURM_JOBID" > test.sh
-          chmod +x test.sh
-          ls -lrta
-          echo test.sh content is
-          echo *****
-          cat ./test.sh
-          echo *********
-          echo 'exiting'
-          bash -e ./test.sh || true
+          cat >>  test.sh <<EOF                                                                                                                           #/bin/bash                                                                                                                                      sleep 1s                                                                                                                                        scancel -f --signal=TERM -v $SLURM_JOBID                                                                                                        EOF                                                                                                                                             chmod +x test.sh
+          bash  test.sh
+          echo exit code $?
           exit 0
         shell: bash
