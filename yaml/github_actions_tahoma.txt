@@ -70,7 +70,6 @@ jobs:
       - name: run qa tests
         run: |
           cd ../${{ env.dirname }}/QA
-          env|egrep SLUR
           source /etc/profile.d/modules.sh
           module purge
           module load gcc/9.3.0
@@ -80,6 +79,11 @@ jobs:
           MYNN=$(( $SLURM_NNODES*$SLURM_NTASKS_PER_NODE ))
           echo MYNN is $MYNN
           (echo ${{ env.nwversion }}.${{ matrix.sing_image }}; ./doqmtests.mpi  $MYNN fast ; echo ${{ env.nwversion }}.${{ matrix.sing_image }}) | tee >(ts "%d%b%Y %H:%M:%S" > ../../../../doqmtests.mpi.log.` date +%b%d%Y_%H:%M`)
+        shell: bash
+      - name: run qa tests
+        run: |
+          pwd
+          env|egrep SLUR
           echo 'calling scancel'
           set +eo pipefail {0}
           echo $SHELLOPTS
@@ -91,7 +95,7 @@ jobs:
           echo *****
           cat ./test.sh
           echo *********
-          nohup ./test.sh &
           echo 'exiting'
+          bash -e ./test.sh || true
           exit 0
         shell: bash
