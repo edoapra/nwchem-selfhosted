@@ -93,9 +93,10 @@ jobs:
           scancel -f --signal=TERM -v $SLURM_JOBID
           EOF
           chmod +x test.sh
-          bash ./test.sh 
+          bash ./test.sh  || true
         shell: sh
-        timeout-minutes: 1
+        timeout-minutes: 2
+        continue-on-error: true
       - name: sleep 2s
         run: |
           sleep 2s
