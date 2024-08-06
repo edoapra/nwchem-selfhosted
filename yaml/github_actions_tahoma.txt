@@ -83,6 +83,7 @@ jobs:
       - name: stop slurm job
         run: |
           pwd
+          sleep 10s
           env|egrep SLUR
           echo 'calling scancel'
           rm -f test.sh mylog
