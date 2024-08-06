@@ -94,4 +94,4 @@ jobs:
           chmod +x test.sh
           nohup bash ./test.sh >& mylog < /dev/null &
           exit 0
-        shell: bash
+        shell: sh
