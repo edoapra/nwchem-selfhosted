@@ -5,10 +5,10 @@ on:
     types: [backend_automation]
   workflow_dispatch:
 jobs:
-  build_workflow:
+#  build_workflow:
 #    uses: edoapra/nwchem/.github/workflows/update_main.yml@main
-    secrets:
-      inherit
+#    secrets:
+#      inherit
   build_singularity:
     needs: [build_workflow]
     uses: edoapra/nwchem-singularity/.github/workflows/apptainer_action.ifx.yml@master
