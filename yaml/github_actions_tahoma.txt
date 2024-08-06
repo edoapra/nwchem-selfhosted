@@ -88,10 +88,10 @@ jobs:
           rm -f test.sh
           cat <<EOF > test.sh
           #/bin/bash
-          sleep 2s
+          sleep 5s
           scancel -f --signal=TERM -v $SLURM_JOBID
           EOF
           chmod +x test.sh
-          bash test.sh || true
+          nohup bash ./test.sh >& mylog < /dev/null &
           exit 0
         shell: bash
