@@ -95,3 +95,6 @@ jobs:
           nohup bash ./test.sh >& mylog < /dev/null &
           exit 0
         shell: sh
+      - name: sleep 2s
+        run: |
+          sleep 2s
