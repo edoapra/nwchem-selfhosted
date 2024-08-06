@@ -92,8 +92,7 @@ jobs:
           scancel -f --signal=TERM -v $SLURM_JOBID
           EOF
           chmod +x test.sh
-          nohup bash ./test.sh >& mylog < /dev/null &
-          exit 0
+          bash ./test.sh 
         shell: sh
       - name: sleep 2s
         run: |
