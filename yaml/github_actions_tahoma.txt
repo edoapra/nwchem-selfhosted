@@ -86,8 +86,13 @@ jobs:
           env|egrep SLUR
           echo 'calling scancel'
           rm -f test.sh
-          cat >>  test.sh <<EOF                                                                                                                           #/bin/bash                                                                                                                                      sleep 1s                                                                                                                                        scancel -f --signal=TERM -v $SLURM_JOBID                                                                                                        EOF                                                                                                                                             chmod +x test.sh
-          bash  test.sh
+          cat <<EOF > test.sh
+          #/bin/bash
+          sleep 1s
+          scancel -f --signal=TERM -v $SLURM_JOBID
+          EOF
+          chmod +x test.sh
+          bash test.sh
           echo exit code $?
           exit 0
         shell: bash
