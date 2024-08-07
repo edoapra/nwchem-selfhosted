@@ -85,18 +85,13 @@ jobs:
           pwd
           sleep 10s
           env|egrep SLUR
-          echo 'calling scancel'
-          rm -f test.sh mylog
-          cat <<EOF > test.sh
+          mytest=test_$SLURM_JOBID.sh
+          echo mytest is $mytest
+          rm -f $mytest
+          cat <<EOF > /home/edo/$mytest
           #/bin/bash
-          #sleep 1s
           scancel -f --signal=TERM -v $SLURM_JOBID
           EOF
-          chmod +x test.sh
-          bash ./test.sh  || true
-        shell: sh
-        timeout-minutes: 2
-        continue-on-error: true
-      - name: sleep 2s
-        run: |
-          sleep 2s
+          chmod +x /home/edo/$mytest
+        shell: bash
+        
