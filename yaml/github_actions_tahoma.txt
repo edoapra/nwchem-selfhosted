@@ -94,4 +94,8 @@ jobs:
           EOF
           chmod +x /home/edo/$mytest
         shell: bash
+      - name: sleep
+        run: |
+          sleep 2m
+        shell: bash
         
