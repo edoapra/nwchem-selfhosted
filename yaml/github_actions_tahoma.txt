@@ -90,7 +90,8 @@ jobs:
           rm -f $mytest
           cat <<EOF > /home/edo/$mytest
           #/bin/bash
-          scancel -f --signal=TERM -v $SLURM_JOBID
+          #scancel -f --signal=TERM -v $SLURM_JOBID
+          scancel -v $SLURM_JOBID
           EOF
           chmod +x /home/edo/$mytest
           sleep 2m
