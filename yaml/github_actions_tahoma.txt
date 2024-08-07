@@ -94,6 +94,5 @@ jobs:
           scancel -v $SLURM_JOBID
           EOF
           chmod +x /home/edo/$mytest
-          sleep 2m
         shell: bash
         
