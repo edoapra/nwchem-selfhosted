@@ -2,7 +2,7 @@ name: NWChem_CI_tahoma
 
 on:
   schedule:
-    - cron: '05 00 * * TUE'
+    - cron: '15 00 * * TUE'
   repository_dispatch:
     types: [backend_automation]
   workflow_dispatch:
@@ -21,7 +21,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        shell: /bin/bash --noprofile --norc -eo pipefail {0}
+        shell: /bin/bash -eo pipefail {0}
     timeout-minutes: 2880
     continue-on-error: true
     strategy:
@@ -65,13 +65,11 @@ jobs:
           ls -lr ${{ env.dirname }}/QA
       - name: load singularity image
         run: |
-	  export PATH=/usr/bin:/bin:/usr/local/bin:/sbin:/usr/sbin
           export https_proxy=http://proxy.emsl.pnl.gov:3128
           singularity pull -F --name ./nwchems_`id -u`.img oras://ghcr.io/edoapra/nwchem/nwchem-${{ env.nwversion }}.${{ matrix.sing_image }}:latest
           srun -N $SLURM_NNODES -n $SLURM_NNODES /bin/cp ./nwchems_`id -u`.img /big_scratch/nwchems.img
       - name: run qa tests
         run: |
-	  export PATH=/usr/bin:/bin:/usr/local/bin:/sbin:/usr/sbin
           cd ../${{ env.dirname }}/QA
           source /etc/profile.d/modules.sh
           module purge
@@ -83,7 +81,6 @@ jobs:
           (echo ${{ env.nwversion }}.${{ matrix.sing_image }}; ./doqmtests.mpi  $MYNN flaky ; echo ${{ env.nwversion }}.${{ matrix.sing_image }}) | /bin/tee >(/bin/ts "%d%b%Y %H:%M:%S" > ../../../../${{ env.nwversion }}.${{ matrix.sing_image }}.doqmtests.mpi.log.` /bin/date +%b%d%Y_%H:%M`)
       - name: stop slurm job
         run: |
-	  export PATH=/usr/bin:/bin:/usr/local/bin:/sbin:/usr/sbin
           pwd
           sleep 10s
           env|egrep SLUR
