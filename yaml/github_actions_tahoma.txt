@@ -2,7 +2,7 @@ name: NWChem_CI_tahoma
 
 on:
   schedule:
-    - cron: '15 00 * * TUE'
+    - cron: '15 30 * * TUE'
   repository_dispatch:
     types: [backend_automation]
   workflow_dispatch:
