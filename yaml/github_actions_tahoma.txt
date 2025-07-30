@@ -3,7 +3,7 @@ name: NWChem_CI_tahoma
 on:
   schedule:
 #ZULU = PST + 7
-    - cron: '45 18 * * WED'
+    - cron: '55 18 * * WED'
   repository_dispatch:
     types: [backend_automation]
   workflow_dispatch:
