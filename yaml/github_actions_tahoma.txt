@@ -1,9 +1,6 @@
 name: NWChem_CI_tahoma
 
 on:
-# schedule:
-#ZULU = PST + 7
-#    - cron: '55 18 * * WED'
   repository_dispatch:
     types: [backend_automation]
   workflow_dispatch:
@@ -79,7 +76,6 @@ jobs:
           source /etc/profile.d/modules.sh
           module purge
           module avail
-#          module load openmpi/4.1.4
           export https_proxy=http://proxy.emsl.pnl.gov:3128
           export MPIRUN_PATH=`which srun`
           MYNN=$(( $SLURM_NNODES*$SLURM_NTASKS_PER_NODE ))
