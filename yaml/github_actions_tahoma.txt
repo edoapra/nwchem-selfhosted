@@ -73,9 +73,6 @@ jobs:
       - name: run qa tests
         run: |
           cd ../${{ env.dirname }}/QA
-          source /etc/profile.d/modules.sh
-          module purge
-          module avail
           export https_proxy=http://proxy.emsl.pnl.gov:3128
           export MPIRUN_PATH=`which srun`
           MYNN=$(( $SLURM_NNODES*$SLURM_NTASKS_PER_NODE ))
