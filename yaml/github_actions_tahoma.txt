@@ -46,6 +46,10 @@ jobs:
         MPIRUN_NPOPT: -n
         NWCHEM_EXECUTABLE: "singularity exec /big_scratch/nwchems.img nwchem "
     steps:
+      - name: echo date
+        run: |
+           echo 'current date is: '$(date)
+           echo 'Pacific currente date: ' $(TZ='America/Los_Angeles' date)
       - name: nwchem version tag
         run: |
           if [[ ${{ matrix.branch }} ==  master ]]; then
