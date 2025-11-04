@@ -27,7 +27,7 @@ jobs:
         os:
           - [self-hosted, centos7]
         branch:
-          - hotfix/release-7-2-0
+          - hotfix/release-7-3-0
           - master
         sing_image:
           - ompi41x.ifx
@@ -36,12 +36,12 @@ jobs:
     env:
         USE_LIBXC: 1
         COMEX_MAX_NB_OUTSTANDING: 8
-        SINGULARITYENV_NWCHEM_BASIS_LIBRARY: /cluster/apps/nwchem/nwchem/src/basis/libraries/
-        SINGULARITYENV_SCRATCH_DIR: /big_scratch
+        APPTAINERENV_NWCHEM_BASIS_LIBRARY: /cluster/apps/nwchem/nwchem/src/basis/libraries/
+        APPTAINERENV_SCRATCH_DIR: /big_scratch
         APPTAINERENV_NWCHEM_BASIS_LIBRARY: /cluster/apps/nwchem/nwchem/src/basis/libraries/
         APPTAINERENV_SCRATCH_DIR: /big_scratch
         MPIRUN_NPOPT: -n
-        NWCHEM_EXECUTABLE: "singularity exec /big_scratch/nwchems.img nwchem "
+        NWCHEM_EXECUTABLE: "apptainer -q exec /big_scratch/nwchems.img nwchem "
     steps:
       - name: echo date
         run: |
@@ -52,7 +52,7 @@ jobs:
           if [[ ${{ matrix.branch }} ==  master ]]; then
             echo "nwversion=dev" >> $GITHUB_ENV
           else
-            echo "nwversion=720" >> $GITHUB_ENV
+            echo "nwversion=730" >> $GITHUB_ENV
           fi
       - name:  dir name
         run: |
@@ -68,7 +68,7 @@ jobs:
       - name: load singularity image
         run: |
           export https_proxy=http://proxy.emsl.pnl.gov:3128
-          singularity pull -F --name ./nwchems_`id -u`.img oras://ghcr.io/edoapra/nwchem/nwchem-${{ env.nwversion }}.${{ matrix.sing_image }}:latest
+          apptainer pull -F --name ./nwchems_`id -u`.img oras://ghcr.io/edoapra/nwchem/nwchem-${{ env.nwversion }}.${{ matrix.sing_image }}:latest
           srun -N $SLURM_NNODES -n $SLURM_NNODES /bin/cp ./nwchems_`id -u`.img /big_scratch/nwchems.img
       - name: run qa tests
         run: |
