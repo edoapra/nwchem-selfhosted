@@ -61,7 +61,6 @@ jobs:
           cd ..
           rm  -rf ${{ env.dirname }} nwchemgit-nwchem-*
           wget -q https://github.com/nwchemgit/nwchem/tarball/${{ matrix.branch }} -O - | tar -xz --exclude=src --exclude=contrib --exclude=web --exclude=examples --exclude=doc --exclude=travis --exclude="nwxc*"  --exclude="chem-library-tests"
-	  #myhash=$(git rev-parse --short=7 HEAD)
           mv nwchemgit-nwchem-* ${{ env.dirname }}
           ls -lr ${{ env.dirname }}/QA
       - name: load singularity image
