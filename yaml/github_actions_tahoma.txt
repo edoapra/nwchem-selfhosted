@@ -4,6 +4,15 @@ on:
   repository_dispatch:
     types: [backend_automation]
   workflow_dispatch:
+    inputs:
+      repository_username:
+        type: string
+        required: false
+        default: 'nwchemgit'
+      branch:
+        type: string
+        required: false
+        default: 'master'
 jobs:
   build_workflow:
     uses: edoapra/nwchem/.github/workflows/update_main.yml@main
@@ -12,6 +21,9 @@ jobs:
   build_singularity:
     needs: [build_workflow]
     uses: edoapra/nwchem-singularity/.github/workflows/apptainer_action.ifx.yml@master
+    with:
+      repository_username: ${{ inputs.repository_username }}
+      branch: $${{ inputs.branch}}
     secrets:
       inherit
   test_on_tahoma:
