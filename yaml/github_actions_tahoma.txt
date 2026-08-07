@@ -23,7 +23,7 @@ jobs:
     uses: edoapra/nwchem-singularity/.github/workflows/apptainer_action.ifx.yml@master
     with:
       repository_username: ${{ inputs.repository_username }}
-      branch: $${{ inputs.branch}}
+      branch: ${{ inputs.branch}}
     secrets:
       inherit
   test_on_tahoma:
@@ -40,7 +40,7 @@ jobs:
           - [self-hosted, centos7]
         branch:
           - hotfix/release-7-3-0
-          - master
+          - ${{ inputs.branch}}
         sing_image:
           - ompi41x.ifx
           - ompi41x
@@ -59,7 +59,7 @@ jobs:
            echo 'Pacific TZ current date: ' $(TZ='America/Los_Angeles' date)
       - name: nwchem version tag
         run: |
-          if [[ ${{ matrix.branch }} ==  master ]]; then
+          if [[ ${{ inputs.branch }} ==  master ]]; then
             echo "nwversion=dev" >> $GITHUB_ENV
           else
             echo "nwversion=730" >> $GITHUB_ENV
@@ -72,7 +72,7 @@ jobs:
           pwd
           cd ..
           rm  -rf ${{ env.dirname }} nwchemgit-nwchem-*
-          wget -q https://github.com/nwchemgit/nwchem/tarball/${{ matrix.branch }} -O - | tar -xz --exclude=src --exclude=contrib --exclude=web --exclude=examples --exclude=doc --exclude=travis --exclude="nwxc*"  --exclude="chem-library-tests"
+          wget -q https://github.com/${{ inputs.repository_username }}/nwchem/tarball/${{ inputs.branch }} -O - | tar -xz --exclude=src --exclude=contrib --exclude=web --exclude=examples --exclude=doc --exclude=travis --exclude="nwxc*"  --exclude="chem-library-tests"
           mv nwchemgit-nwchem-* ${{ env.dirname }}
           ls -lr ${{ env.dirname }}/QA
       - name: load singularity image
