@@ -1,4 +1,10 @@
 name: update_main_branch
+permissions:
+  contents: read
+  actions: write
+  #issues: write
+  #pull-requests: write
+  #https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions
 
 on:
   schedule:
